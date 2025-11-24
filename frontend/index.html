@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>МОЁ СЖАТИЕ — онлайн-сервис</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <!-- ===== ШАПКА ===== -->
+    <header class="top-bar">
+      <h1 class="logo">МОЁ СЖАТИЕ</h1>
+      <p class Sub-title>Онлайн-сервис для уменьшения размера файлов</p>
+    </header>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <main class="content">
+      <!-- 1. Выбор файла -->
+      <section class="card select-section">
+        <div id="fileInfo" class="file-info hidden">
+          <span class="file-icon">📄</span>
+          <div>
+            <div id="fileName" class="file-name"></div>
+            <div id="fileSize" class="file-size"></div>
+          </div>
+        </div>
+
+        <input type="file" id="fileInput" hidden>
+        <button id="selectBtn" class="btn primary large">Выбрать файл</button>
+        <div class="formats">PDF, DOCX, PNG, JPG, TXT, MP4, ZIP и др.</div>
+      </section>
+
+      <!-- 2. Настройки -->
+      <section class="card settings-section hidden" id="settingsSec">
+        <h2>Алгоритм сжатия</h2>
+        <select id="algorithm" class="select-box">
+          <option value="auto">Авто (рекомендовано)</option>
+          <option value="pdf">PDF — оптимизация изображений</option>
+          <option value="img">PNG/JPG — без потерь</option>
+          <option value="docx">DOCX — пересборка документа</option>
+          <option value="txt">TXT — Huffman / LZ77</option>
+          <option value="mp4">MP4 — перекодирование</option>
+        </select>
+
+        <button id="startBtn" class="btn success large">Начать сжатие</button>
+      </section>
+
+      <!-- 3. Прогресс -->
+      <section class="card progress-section hidden" id="progressSec">
+        <h2>Сжатие...</h2>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p id="progressText">0 %</p>
+      </section>
+
+      <!-- 4. Результат -->
+      <section class="card result-section hidden" id="resultSec">
+        <h2>Готово! ✅</h2>
+        <div class="result-grid">
+          <div><span>Исходный размер:</span><strong id="origSize">-</strong></div>
+          <div><span>Новый размер:</span><strong id="newSize">-</strong></div>
+          <div><span>Сжато на:</span><strong id="savedPercent">-</strong></div>
+        </div>
+        <button id="downloadBtn" class="btn primary large">Скачать файл</button>
+      </section>
+    </main>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer>Безопасно • Без регистрации • Без потери качества</footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
