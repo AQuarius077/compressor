@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Compressor Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .upload-area { 
+            border: 2px dashed #ccc; 
+            padding: 40px; 
+            text-align: center; 
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .result { 
+            background: #f0f0f0; 
+            padding: 20px; 
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Universal File Compressor</h1>
+    
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <p>Click to select file</p>
+        <input type="file" id="fileInput" style="display: none;">
+    </div>
+    
+    <button onclick="compressFile()">Compress</button>
+    
+    <div id="result" class="result" style="display: none;">
+        <h3>Compression Complete!</h3>
+        <p>Original size: <span id="originalSize"></span></p>
+        <p>Compressed size: <span id="compressedSize"></span></p>
+        <p>Compression ratio: <span id="ratio"></span></p>
+        <button onclick="downloadFile()">Download</button>
+    </div>
+
+    <script>
+        let fileId = null;
+        
+        async function compressFile() {
+            const file = document.getElementById('fileInput').files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/compress', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                fileId = data.fileId;
+                
+                document.getElementById('originalSize').textContent = formatBytes(file.size);
+                document.getElementById('compressedSize').textContent = formatBytes(data.compressedSize);
+                document.getElementById('ratio').textContent = (data.compressionRatio * 100).toFixed(1) + '%';
+                document.getElementById('result').style.display = 'block';
+                
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        function downloadFile() {
+            if (fileId) {
+                window.open(`http://localhost:8000/api/download/${fileId}`, '_blank');
+            }
+        }
+        
+        function formatBytes(bytes) {
+            return (bytes / 1024).toFixed(2) + ' KB';
+        }
+    </script>
+</body>
+</html>
